@@ -47,7 +47,7 @@ const NFT = () => {
 				alert("Transaction failed: " + error.message);
 			}}
 		>
-		{`Mint NFT - 0.1 ETH`}
+		{`Mint NFT - 0.1 Celo`}
 		</TransactionButton>   
         </div>
       )}	
