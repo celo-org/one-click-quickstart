@@ -1,9 +1,24 @@
 import { TransactionButton } from "thirdweb/react";
 import { createThirdwebClient, toWei } from "thirdweb";
-import { celoAlfajores } from "wagmi/chains";
 import { prepareTransaction } from "thirdweb/transaction";
 import { useState } from 'react';
 import styles from '../styles/SendCelo.module.css';
+import { defineChain } from "thirdweb/chains";
+
+const celoAlfajores = defineChain({
+  id: 44787,
+  name: "Celo Alfajores",
+  rpc: "https://alfajores-forno.celo-testnet.org", 
+  nativeCurrency: {
+    decimals: 18,
+    name: "CELO",
+    symbol: "CELO",
+  },
+  blockExplorers: {
+    default: { name: "CeloScan", url: "https://alfajores.celoscan.io" },
+  },
+  testnet: true,
+});
 
 const client = createThirdwebClient({
   clientId: import.meta.env.VITE_CLIENTID,
@@ -55,13 +70,16 @@ const SendCelo = () => {
             client: client,
             value: toWei(amount),
           });
-
+          
           console.log("Prepared Transaction:", transaction);
           return transaction;
         }}
         onTransactionSent={(result) => {
           console.log("Transaction sent:", result);
           alert("Transaction sent successfully!");
+          
+          setAmount("");
+          setRecipient("");
         }}
         onError={(error) => {
           console.error("Transaction failed:", error);
